@@ -10,6 +10,11 @@ app.use(cors());
 app.use(express.json())
 
 app.use("/api/v1/teacher", router)
+app.use("/", async (req, res) => {
+    res.status(200).send(
+        "Server working succefully"
+    )
+})
 
 
 module.exports = app;
