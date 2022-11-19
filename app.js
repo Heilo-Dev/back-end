@@ -1,20 +1,31 @@
 const express = require("express");
 const app = express();
 const cors = require("cors")
-const router = require("./routes/v1/teacher.routes")
-
+const teacherRouter = require("./routes/v1/teacher.route")
+const userRoute = require("./routes/v1/user.route")
 
 
 // midlldeware
 app.use(cors());
 app.use(express.json())
 
-app.use("/api/v1/teacher", router)
-app.use("/", async (req, res) => {
+
+app.get("/", async (req, res) => {
     res.status(200).send(
-        "Server working successfully"
+        "Server Working Successfully!! 😎"
     )
 })
 
+app.use("/api/v1/user", userRoute)
+app.use("/api/v1/teacher", teacherRouter)
+
+
+
+app.use("/*", async (req, res) => {
+    res.status(404).json({
+        status: "fail",
+        message:"No routes found"
+    })
+})
 
 module.exports = app;
