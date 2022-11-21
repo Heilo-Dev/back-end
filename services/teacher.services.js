@@ -1,19 +1,14 @@
-const Teacher = require("../model/techerSchema");
+const { userupdate } = require("../controller/user.controller");
+const User = require("../model/User")
 
-exports.getTecherByEmailService = async (email) => {
-    const result = await Teacher.find({ email }, {})
-    console.log(result)
-    return result;
-
+exports.getTecherFindByEmail = async (email) => {
+    return result = await User.findOne({ email })
 
 }
-exports.createATecherService = async (body) => {
-    const result = await Teacher.create(body);
-    return result;
-}
+
 exports.updateATeacherServices = async (email, body) => {
     // console.log(email, body);
-    const result = await Teacher.updateOne({ email }, { $set: body }, { new: true });
-    
+    const result = await User.updateOne({ email }, body);
+
     return result;
 }

@@ -1,12 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const controller = require("../../controller/techer.controller");
+const teacher = require("../../controller/techer.controller");
+const verifyToken = require("../../middleware/verifyToken");
 
 
-router.route("/")
-    .get(controller.getTecherByEmailController)
-    .post(controller.createATeacherController)
-    .put(controller.updateATeacherController)
+router.route("/update")
+    .patch(verifyToken,teacher.updateATeacherController)
 
 
 

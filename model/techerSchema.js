@@ -20,7 +20,7 @@ const TeacherSchema = mongoose.Schema({
     },
     hourlyRate: {
         type: Number,
-        
+        min:0
 
     },
     gender: {

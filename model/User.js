@@ -39,6 +39,18 @@ const userSchema = mongoose.Schema({
         validate: [validator.isMobilePhone],
         message: "{VALUE} is not valid number"
     },
+    education: {
+        currentInstitution: {
+            name: String,
+            department: String,
+            session: String
+        },
+        previousInstitution: {
+            name: String,
+            department: String,
+
+        }
+    },
     role: {
         type: String,
         required: true,
@@ -55,12 +67,51 @@ const userSchema = mongoose.Schema({
 
     gender: {
         type: String,
-        enum: ["male", "female", "transgender",''],
-      default:""
+        enum: ["male", "female", "transgender", ''],
+
+    },
+
+    /**
+     * TEACHER iNFORMATION
+     */
+    hourlyRate: {
+        type: Number,
+        min: 0
+
+    },
+    tuitionSubjects: [{
+        name: {
+            type: String,
+        },
+        class: {
+            type: String
+        }
+    }],
+    division: {
+        type: String,
+        lowercase: true,
+        trim: true
+    },
+    village: {
+        type: String,
+        trim: true
+    },
+    preferredMedium: [{
+        type: String,
+
+    }],
+    availability: [{type:String}
+        
+    ],
+    /* preferredClass: [{
+        type: String
+    }] */
+    rating: {
+        type:Number
     }
 
-
-}, {
+},
+    {
     timestamps: true
 })
 
@@ -74,7 +125,7 @@ userSchema.pre("save", function (next) {
 })
 
 userSchema.methods.comparePassword = function (password) {
-    
+
     const isPasswordValid = bcrypt.compareSync(password, this.password)
     console.log(this.password);
     return isPasswordValid

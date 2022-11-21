@@ -3,7 +3,7 @@ const { errorHandler } = require("../middleware/errorHandler");
 
 exports.getTecherByEmailController = async (req, res, next) => {
     try {
-        const result = await services.getTecherByEmailService(req.query.email)
+        const result = await services.getTecherFindByEmail(req.query.email)
         res.status(200).json({
             status: "Success",
             message: "data fetching Successfully",
@@ -33,20 +33,31 @@ exports.createATeacherController = async (req, res, next) => {
     }
 }
 
+
 exports.updateATeacherController = async (req, res, next) => {
     try {
-        // console.log(req.query.email, req.body)
-        const result = await services.updateATeacherServices(req.query.email, req.body)
-
-        res.status(200)
-            .json({
-                status:"success",
-                result: result
+        const { email } = req.user
+        const user = await services.getTecherFindByEmail(email)
+console.log(user);
+        if (user.role != "teacher") {
+            return res.status(401).json({
+                status: "fail",
+                error: "not authorized for this route"
             })
+        }
+        const result = await services.updateATeacherServices(email, req.body)
+        console.log(result);
+        // if(modifiedCount)
+        res.status(200).json({
+            status: "success",
+            result
+        })
 
-    }
-    catch (err) {
-        console.log(err);
-        errorHandler(res, err)
+    } catch (error) {
+        res.status(400).json({
+            status: "fail",
+            error
+        })
+
     }
 }

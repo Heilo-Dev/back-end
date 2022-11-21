@@ -12,3 +12,7 @@ exports.findUserByEmail = async (email) => {
     let result = await User.findOne({ email })
     return result;
 }
+exports.userupdate = async (data) => {
+    let result = await User.updateOne(data)
+    return result;
+}

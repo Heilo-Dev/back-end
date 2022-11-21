@@ -1,5 +1,5 @@
 const Services = require("../services/user.services")
-const {generateToken} = require("../utils/generateToken")
+const { generateToken } = require("../utils/generateToken")
 
 exports.register = async (req, res, next) => {
     try {
@@ -21,7 +21,7 @@ exports.register = async (req, res, next) => {
 
 
 exports.login = async (req, res, next) => {
-    
+
     try {
         const { email, password } = req.body;
         if (!(email || !password)) {
@@ -31,7 +31,7 @@ exports.login = async (req, res, next) => {
             })
         }
         const user = await Services.findUserByEmail(email)
-        if (!user ) {
+        if (!user) {
             return res.status(400).json({
                 status: "fail",
                 error: "no user found with this email, Please create a new account"
@@ -93,3 +93,5 @@ exports.getme = async (req, res, next) => {
 
     }
 }
+
+
