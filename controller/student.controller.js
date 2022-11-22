@@ -22,12 +22,12 @@ exports.ondemand = async (req, res, next) => {
 
 
         const result = await studentServices.getAllByFilter(req.query)
-        // console.log(result);
+        console.log(result);
 
         res.status(200).json({
             status: "success",
-            found:result.count,
-            result:result.result
+            found:result?.count,
+            result:result?.result
         })
 
     } catch (error) {
