@@ -1,10 +1,7 @@
 const User = require("../model/User");
 
 exports.getAllByFilter = async (filter) => {
-  console.log("services ", filter);
-
-
-
+  
   if (filter.gender && !filter.subject) {
     const result = await User.find({ gender: filter.gender })
     const count = await User.find({ gender: filter.gender }).count()
@@ -27,5 +24,18 @@ exports.getAllByFilter = async (filter) => {
     return { result, count }
 
   }
+  
+}
+
+
+exports.getStudentFindByEmail = async (email) => {
+  return result = await User.findOne({ email })
+
+}
+
+exports.updaterStudentProfile = async (email,data) => {
+
+  const result = await User.updateOne({ email }, data)
+  return result;
   
 }

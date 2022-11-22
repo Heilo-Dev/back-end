@@ -41,19 +41,35 @@ const userSchema = mongoose.Schema({
     },
     education: {
         currentInstitution: {
-            name: String,
-            department: String,
-            session: String
+            name: {
+                type: String,
+                lowercase: true
+            },
+            department: {
+                type: String,
+                lowercase: true
+            },
+            session: {
+                type: String,
+                lowercase: true
+            }
         },
         previousInstitution: {
-            name: String,
-            department: String,
+            name: {
+                type: String,
+                lowercase: true
+            },
+            department: {
+                type: String,
+                lowercase: true
+            },
 
         }
     },
     role: {
         type: String,
         required: true,
+
         enum: {
             values: ["student", "teacher", "admin"],
             message: "{VALUE} is not student or teacher"
@@ -83,7 +99,7 @@ const userSchema = mongoose.Schema({
         name: {
             type: String,
             trim: true,
-            lowercase:true
+            lowercase: true
         },
         class: {
             type: String
@@ -100,26 +116,28 @@ const userSchema = mongoose.Schema({
     },
     preferredMedium: [{
         type: String,
+        lowercase: true
 
     }],
     availability: [
         {
             type: String,
-            lowercase:true
+            lowercase: true,
+            trim: true
         }
-       
+
     ],
     /* preferredClass: [{
         type: String
     }] */
     rating: {
-        type:Number
+        type: Number
     }
 
 },
     {
-    timestamps: true
-})
+        timestamps: true
+    })
 
 userSchema.pre("save", function (next) {
     const password = this.password;

@@ -5,5 +5,6 @@ const verifyToken = require('../../middleware/verifyToken');
 
 
 router.get("/ondemand", userController.ondemand)
+router.patch("/update",verifyToken, userController.updaterStudentProfile)
 
 module.exports = router;

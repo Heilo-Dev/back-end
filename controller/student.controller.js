@@ -3,31 +3,44 @@ const studentServices = require("../services/student.services")
 
 exports.ondemand = async (req, res, next) => {
     try {
-
-        // console.log("query ", query);
-        let filter = {}
-        // if (req.query.gender) {
-        //     gender = req.query.gender
-        //     filter.gender=gender
-        // }
-        // if (req.query.subject) {
-        //     tuition = req.query.subject
-        //     // console.log(tuition);
-
-        //     // filter.tuitionSubjects.name = tuition
-
-        // }
-        // console.log(filter);
-
-
-
         const result = await studentServices.getAllByFilter(req.query)
         console.log(result);
 
         res.status(200).json({
             status: "success",
-            found:result?.count,
-            result:result?.result
+            found: result?.count,
+            result: result?.result
+        })
+
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({
+            status: "fail",
+            error
+        })
+
+    }
+}
+
+
+
+exports.updaterStudentProfile = async (req, res, next) => {
+    try {
+        const { email } = req.user
+        const user = await studentServices.getStudentFindByEmail(email)
+        console.log("user ",user);
+        if (user.role != "student") {
+            return res.status(401).json({
+                status: "fail",
+                error: "not authorized for this route"
+            })
+        }
+
+        const result = await studentServices.updaterStudentProfile(email,req.body)
+        
+        res.status(200).json({
+            status: "success",
+            result
         })
 
     } catch (error) {
