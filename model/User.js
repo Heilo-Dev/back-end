@@ -82,6 +82,8 @@ const userSchema = mongoose.Schema({
     tuitionSubjects: [{
         name: {
             type: String,
+            trim: true,
+            lowercase:true
         },
         class: {
             type: String
@@ -100,8 +102,12 @@ const userSchema = mongoose.Schema({
         type: String,
 
     }],
-    availability: [{type:String}
-        
+    availability: [
+        {
+            type: String,
+            lowercase:true
+        }
+       
     ],
     /* preferredClass: [{
         type: String
