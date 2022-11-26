@@ -35,7 +35,7 @@ exports.getStudentFindByEmail = async (email) => {
 
 exports.updaterStudentProfile = async (email,data) => {
 
-  const result = await User.updateOne({ email }, data)
-  return result;
+  return result = await User.updateOne({ email }, data)
+  
   
 }
