@@ -1,4 +1,4 @@
-const User = require("../model/User");
+const User = require("../model/user");
 
 exports.getAllByFilter = async (filter) => {
   
@@ -9,14 +9,14 @@ exports.getAllByFilter = async (filter) => {
 
   }
 
-  if (filter.gender && filter.subject) {
+  if (filter.gender && filter.subject ) {
     const result = await User.find({ gender: filter.gender, $in: { tuitionSubjects: filter.subject } })
     const count = await User.find({ gender: filter.gender, $in: { tuitionSubjects: filter.subject } }).count()
  
     return { result, count }
 
   }
-  if (!filter.gender && filter.subject) {
+  if (!filter.gender && filter.subject ) {
     const result = await User.find({ "tuitionSubjects.name": filter.subject})
     const count = await User.find({ "tuitionSubjects.name": filter.subject}).count()
     
