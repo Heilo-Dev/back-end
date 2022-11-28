@@ -8,11 +8,7 @@ exports.ondemand = async (req, res, next) => {
 
         const { gender, range, subject, availability, topic, limit, id } = req.query;
 
-        let filter = {
-            // hourlyRate: {
-            //     "$lte":null
-            // }
-        }
+        let filter = {}
 
         if (gender) {
             filter.gender = gender
@@ -23,21 +19,25 @@ exports.ondemand = async (req, res, next) => {
                 "$lte": (+req.query.range)
             }
 
-            
+
         }
         if (subject) {
             filter["tuitionSubjects.name"] = subject
         }
+
         if (availability) {
             filter.availability = availability;
         }
+
         const result = await studentServices.getAllByFilter(filter)
-        console.log(result);
+        // console.log(result);
+
         if (result.result.length == 0) {
-          return  res.status(200).json({
-        status:"Not found"
-    })
-}
+            return res.status(200).json({
+                status: "Not found"
+            })
+        }
+        
         res.status(200).json({
             status: "success",
             found: result.count[0].found,
