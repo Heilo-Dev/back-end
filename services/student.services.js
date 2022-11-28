@@ -1,30 +1,22 @@
-const User = require("../model/user");
+const User = require("../model/User");
 
 exports.getAllByFilter = async (filter) => {
+
+  console.log(filter);
+
+  const result = await User.aggregate([{
+    "$match": filter
+  },]).project({ name: 1, "education.currentInstitution.name": 1, tuitionSubjects: 1, hourlyRate :1,gender:1})
+
+  const count = await User.aggregate([{
+    "$match": filter
+  }, {
+    "$count": "found"
+  }])
   
-  if (filter.gender && !filter.subject) {
-    const result = await User.find({ gender: filter.gender })
-    const count = await User.find({ gender: filter.gender }).count()
-    return { result, count }
-
-  }
-
-  if (filter.gender && filter.subject ) {
-    const result = await User.find({ gender: filter.gender, $in: { tuitionSubjects: filter.subject } })
-    const count = await User.find({ gender: filter.gender, $in: { tuitionSubjects: filter.subject } }).count()
- 
-    return { result, count }
-
-  }
-  if (!filter.gender && filter.subject ) {
-    const result = await User.find({ "tuitionSubjects.name": filter.subject})
-    const count = await User.find({ "tuitionSubjects.name": filter.subject}).count()
-    
- 
-    return { result, count }
-
-  }
+  return { result, count }
   
+
 }
 
 
@@ -33,9 +25,9 @@ exports.getStudentFindByEmail = async (email) => {
 
 }
 
-exports.updaterStudentProfile = async (email,data) => {
+exports.updaterStudentProfile = async (email, data) => {
 
   return result = await User.updateOne({ email }, data)
-  
-  
+
+
 }
