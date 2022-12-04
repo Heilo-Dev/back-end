@@ -4,6 +4,7 @@ const cors = require("cors")
 const teacherRouter = require("./routes/v1/teacher.route")
 const userRoute = require("./routes/v1/user.route")
 const studentRouter = require("./routes/v1/student.route")
+const adminRoute = require('./routes/v1/admin.route')
 
 
 // midlldeware
@@ -20,6 +21,8 @@ app.get("/", async (req, res) => {
 app.use("/api/v1/user", userRoute)
 app.use("/api/v1/teacher", teacherRouter)
 app.use("/api/v1/student", studentRouter)
+app.use("/api/v1/student", studentRouter)
+app.use("/api/v1/admin", adminRoute)
 
 
 

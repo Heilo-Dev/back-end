@@ -2,7 +2,7 @@ const User = require("../model/User");
 
 exports.getAllByFilter = async (filter) => {
 
-  console.log(filter);
+  // console.log(filter);
 
   const result = await User.aggregate([{
     "$match": filter
