@@ -8,6 +8,11 @@ const userSchema = mongoose.Schema({
         required: [true, "please provide your name"],
         trim: true
     },
+    balance: {
+        type: Number,
+        min:0,
+        default:0 
+    },
     email: {
         type: String,
         unique: true,
