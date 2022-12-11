@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcryptjs');
+
 
 const userSchema = mongoose.Schema({
     name: {
@@ -8,11 +9,7 @@ const userSchema = mongoose.Schema({
         required: [true, "please provide your name"],
         trim: true
     },
-    balance: {
-        type: Number,
-        min:0,
-        default:0 
-    },
+    
     email: {
         type: String,
         unique: true,
@@ -91,7 +88,9 @@ const userSchema = mongoose.Schema({
         enum: ["male", "female", "transgender", ''],
 
     },
-
+    // balance: {
+    //     ref:"UserWallate"
+    // },
     /**
      * TEACHER iNFORMATION
      */
@@ -152,6 +151,7 @@ userSchema.pre("save", function (next) {
 
     next()
 })
+
 
 userSchema.methods.comparePassword = function (password) {
 

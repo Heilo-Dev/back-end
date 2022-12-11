@@ -18,10 +18,34 @@ app.get("/", async (req, res) => {
     )
 })
 
+
+/**
+ * USER 👇👇
+ * login, register, get me..
+ */
 app.use("/api/v1/user", userRoute)
+/*  */
+
+/**TEACHER 👇👇
+ * update,
+ *  */
 app.use("/api/v1/teacher", teacherRouter)
+/*  */
+
+/**STUDENT 👇👇
+ * on deman Search
+ * update
+ * top-up
+ */
 app.use("/api/v1/student", studentRouter)
-app.use("/api/v1/student", studentRouter)
+
+/*  */
+
+
+/**
+ * ADMIN 👇👇
+ * home Dashboard 
+ */
 app.use("/api/v1/admin", adminRoute)
 
 

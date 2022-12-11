@@ -4,6 +4,9 @@ const { generateToken } = require("../utils/generateToken")
 exports.register = async (req, res, next) => {
     try {
         const result = await Services.singup(req.body)
+        const user = await Services.findUserByEmail(result.email)
+        console.log(user);
+        // const wallate = await Services.createWallate(user.email, user._id)
         res.status(200).json({
             status: "success",
             message: "successfully sign up "
@@ -31,6 +34,7 @@ exports.login = async (req, res, next) => {
             })
         }
         const user = await Services.findUserByEmail(email)
+        console.log(user);
         if (!user) {
             return res.status(400).json({
                 status: "fail",

@@ -1,7 +1,6 @@
 
-const { ObjectId } = require('mongodb');
 const mongoose = require('mongoose');
-
+const ObjectId = mongoose.Types.ObjectId
 const validator = require('validator');
 
 
