@@ -31,3 +31,28 @@ exports.updaterStudentProfile = async (email, data) => {
 
 
 }
+
+exports.topUp_ReqService = async (data) => {
+  const { trxId, amount } = data.transaction
+  const exits = await reqTrxModel.findById({ _id: data._id })
+
+
+  if (!exits) {
+    let result = await reqTrxModel.create(data)
+    return result
+  }
+
+  const filter = exits.transaction.filter(obj => obj.trxId == trxId)
+
+
+  if (!filter.length) {
+    const result = await reqTrxModel.updateOne({ _id: data._id },
+      { $push: { transaction: { trxId, amount } } })
+    return result
+  }
+  else {
+    return result = ("invalid TrxID")
+  }
+
+
+}
