@@ -1,4 +1,7 @@
 const User = require("../model/User");
+const UserWallate = require("../model/UserWallate")
+const reqTrxModel = require("../model/ReqTransaction");
+const { exists } = require("../model/User");
 
 exports.getAllByFilter = async (filter) => {
 
@@ -6,16 +9,16 @@ exports.getAllByFilter = async (filter) => {
 
   const result = await User.aggregate([{
     "$match": filter
-  },]).project({ name: 1, "education.currentInstitution.name": 1, tuitionSubjects: 1, hourlyRate :1,gender:1})
+  },]).project({ name: 1, "education.currentInstitution.name": 1, tuitionSubjects: 1, hourlyRate: 1, gender: 1 })
 
   const count = await User.aggregate([{
     "$match": filter
   }, {
     "$count": "found"
   }])
-  
+
   return { result, count }
-  
+
 
 }
 

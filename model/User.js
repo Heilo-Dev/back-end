@@ -4,6 +4,8 @@ const bcrypt = require('bcryptjs');
 
 
 const userSchema = mongoose.Schema({
+
+    /* Basic Info */
     name: {
         type: String,
         required: [true, "please provide your name"],
@@ -41,32 +43,42 @@ const userSchema = mongoose.Schema({
         validate: [validator.isMobilePhone],
         message: "{VALUE} is not valid number"
     },
+    gender: {
+        type: String,
+        enum: ["male", "female", "transgender"],
+
+    },
+    division: {
+        type: String,
+        lowercase: true,
+        trim: true
+    },
+    village: {
+        type: String,
+        trim: true
+    },
+
+    /* Education */
     education: {
         currentInstitution: {
             name: {
                 type: String,
                 lowercase: true
             },
-            department: {
+            class: {
                 type: String,
                 lowercase: true
             },
-            session: {
+            medium: {
+                type: String,
+                lowercase: true
+            },
+            background: {
                 type: String,
                 lowercase: true
             }
         },
-        previousInstitution: {
-            name: {
-                type: String,
-                lowercase: true
-            },
-            department: {
-                type: String,
-                lowercase: true
-            },
-
-        }
+       
     },
     role: {
         type: String,
@@ -83,17 +95,24 @@ const userSchema = mongoose.Schema({
         default: "inactive"
     },
 
-    gender: {
-        type: String,
-        enum: ["male", "female", "transgender", ''],
-
-    },
+   
     // balance: {
     //     ref:"UserWallate"
     // },
     /**
      * TEACHER iNFORMATION
      */
+    previousInstitution: {
+        name: {
+            type: String,
+            lowercase: true
+        },
+        department: {
+            type: String,
+            lowercase: true
+        },
+
+    },
     hourlyRate: {
         type: Number,
         min: 0
@@ -109,15 +128,8 @@ const userSchema = mongoose.Schema({
             type: String
         }
     }],
-    division: {
-        type: String,
-        lowercase: true,
-        trim: true
-    },
-    village: {
-        type: String,
-        trim: true
-    },
+   
+   
     preferredMedium: [{
         type: String,
         lowercase: true

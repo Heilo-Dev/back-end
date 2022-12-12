@@ -1,16 +1,16 @@
 
 const User = require("../model/User")
-const UserWallate = require("../model/userWallate")
+const UserWallate = require("../model/UserWallate")
 const mongoose = require("mongoose");
 const ObjectId = mongoose.SchemaType.ObjectId
 
 
 
 exports.singup = async (data) => {
-    const result = await User.create(data) 
-    let id =result._id.toString()
-    const wallate = await UserWallate.create({ _id:result.id, email: result.email, role:result.role})
-    
+    const result = await User.create(data)
+    let id = result._id.toString()
+    const wallate = await UserWallate.create({ _id: result.id, email: result.email, role: result.role })
+
     return result;
 }
 // exports.createWallate = async (data) => {

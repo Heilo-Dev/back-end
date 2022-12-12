@@ -1,24 +1,25 @@
 const mongoose = require('mongoose');
-const ObjectId = mongoose.Types.ObjectId
+const { ObjectId } = require('mongodb');
 
 
 const userWallateSchema = mongoose.Schema({
-    _id: {
+    id: {
+        unique:true,
         type: ObjectId,
-        required:true,
-        ref:"User"
+        required: true,
+        ref: "User"
     },
     email: {
-        type:String,
+        type: String,
         required: true,
         unique: true,
-        ref:"User"
+        ref: "User"
     },
     role: {
-        required:true,
-      type:String  
+        required: true,
+        type: String
     },
-    
+
     balance: {
         type: Number,
         min: 0,
