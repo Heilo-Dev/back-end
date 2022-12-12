@@ -86,7 +86,7 @@ exports.updateStudentProfile = async (req, res, next) => {
     }
 }
 
-exports.topUp_ReqControler = async (req, res, next) => {
+exports.topUpReqController = async (req, res, next) => {
     try {
 
         // const { trxId, amount, id, email } = req.body
