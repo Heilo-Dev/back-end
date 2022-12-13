@@ -32,8 +32,9 @@ const userSchema = mongoose.Schema({
                     minUppercase: 1,
                     minSymbols: 1
                 })
+                
             },
-            message: "{VALUE} is not Strong for Password"
+            message: "{VALUE} not Strong Password!! Follow: minumum 6 character  min_number 1, min_Uppercase 1, min_symbol 1 ; eg: Example#1"
         }
     },
     phoneNumber: {
@@ -168,7 +169,7 @@ userSchema.pre("save", function (next) {
 userSchema.methods.comparePassword = function (password) {
 
     const isPasswordValid = bcrypt.compareSync(password, this.password)
-    console.log(this.password);
+    // console.log(this.password);
     return isPasswordValid
 }
 

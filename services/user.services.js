@@ -9,9 +9,18 @@ const ObjectId = mongoose.SchemaType.ObjectId
 exports.singup = async (data) => {
     const result = await User.create(data)
     let id = result._id.toString()
-    const wallate = await UserWallate.create({ _id: result.id, email: result.email, role: result.role })
+    console.log(id)
 
-    return result;
+
+    const creatWallate = await UserWallate.create(
+        {
+            _id: id,
+            email: result.email,
+            role: result.role
+        })
+    console.log(creatWallate);
+
+    return { result, creatWallate };
 }
 // exports.createWallate = async (data) => {
 //     const wallate = await UserWallate.create(data)

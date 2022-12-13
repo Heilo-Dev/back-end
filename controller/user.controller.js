@@ -34,17 +34,17 @@ exports.login = async (req, res, next) => {
             })
         }
         const user = await Services.findUserByEmail(email)
-        console.log(user);
+        // console.log(user);
         if (!user) {
             return res.status(400).json({
                 status: "fail",
-                error: "no user found with this email, Please create a new account"
+                error: "no user found , Please create a new account"
             })
         }
 
 
         const isValidPassword = user.comparePassword(password)
-        console.log(isValidPassword);
+        // console.log(isValidPassword);
 
         if (!isValidPassword) {
             return res.status(401).json({

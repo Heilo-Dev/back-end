@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router()
 const adminController = require("../../controller/admin.controller");
-const verifyToken = require('../../middleware/verifyToken');
+const verifiyAdmin = require('../../middleware/verifyAdmin');
 
 
-router.get("/home",verifyToken, adminController.homeGet)
+router.get("/home", verifiyAdmin, adminController.homeGet)
+router.get("/wallate", verifiyAdmin, adminController.adminWallateController)
+router.post("/purchase-confirmation", verifiyAdmin, adminController.purchaseReqController)
 
 
 module.exports = router;

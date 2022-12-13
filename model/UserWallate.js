@@ -1,12 +1,10 @@
 const mongoose = require('mongoose');
-const { ObjectId } = require('mongodb');
+const ObjectId = mongoose.Types.ObjectId;
 
 
 const userWallateSchema = mongoose.Schema({
-    id: {
-        unique:true,
+    _id: {
         type: ObjectId,
-        required: true,
         ref: "User"
     },
     email: {
@@ -25,6 +23,32 @@ const userWallateSchema = mongoose.Schema({
         min: 0,
         default: 20
     },
+    transaction: [{
+        operator: {
+            type: String,
+            required: true
+        },
+        trxId: {
+            uniqe: true,
+            type: String,
+            required: true,
+            message: "transactionID is not valid"
+        },
+        amount: {
+            type: Number,
+            min: 10,
+            required: true,
+
+        },
+        status: {
+            type: String,
+            enum: ["not-paid", "verified", "pending"],
+            default: "pending"
+        }
+    }, /* {
+        createdAt: { type: Date, default: time }
+
+    } */]
 })
 
 const UserWallate = mongoose.model("UserWallate", userWallateSchema)

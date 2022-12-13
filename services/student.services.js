@@ -1,9 +1,10 @@
 const User = require("../model/User");
 const UserWallate = require("../model/UserWallate")
-const reqTrxModel = require("../model/ReqTransaction");
-const { exists } = require("../model/User");
 
-exports.getAllByFilter = async (filter) => {
+
+
+
+exports.onDemangetAllByFilter = async (filter) => {
 
   // console.log(filter);
 
@@ -36,26 +37,26 @@ exports.updaterStudentProfile = async (email, data) => {
 }
 
 exports.topUp_ReqService = async (data) => {
-  const { trxId, amount } = data.transaction
-  const exits = await reqTrxModel.findById({ _id: data._id })
+  const { trxId, _id, amount, operator } = data;
 
 
-  if (!exits) {
-    let result = await reqTrxModel.create(data)
-    return result
-  }
+  const exits = await UserWallate.findById({ _id })
 
   const filter = exits.transaction.filter(obj => obj.trxId == trxId)
+  // console.log(filter);
 
-
-  if (!filter.length) {
-    const result = await reqTrxModel.updateOne({ _id: data._id },
-      { $push: { transaction: { trxId, amount } } })
-    return result
-  }
-  else {
-    return result = ("invalid TrxID")
+  if (filter.length) {
+    return { status: "fail", message: "Already apply  this TransactionId 👎" }
   }
 
+  const result = await UserWallate.updateOne({ _id }, { $push: { transaction: { trxId, amount, operator }, runValidators: true } },)
+  // console.log(result);
+  return result;
+}
 
+exports.getWallateService = async (user) => {
+  const { email } = user
+  const result = await UserWallate.find({ email: email, })
+
+  return result
 }

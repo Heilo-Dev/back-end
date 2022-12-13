@@ -12,18 +12,25 @@ module.exports = async (req, res, next) => {
                 error: "you are not logged in! "
             })
         }
-        const decodedToken = jwt.verify(token, process.env.ACCESS_SECRECT_TOKEN);
+        const decodedToken =  jwt.verify(token, process.env.ACCESS_SECRECT_TOKEN);
 
         // console.log("decoded ",decodedToken);
-        req.user = await User.findById({ _id: decodedToken.id })
+        const userinfo = await User.findById({ _id: decodedToken.id })
+        
+        if (userinfo.role == "admin" && userinfo.email == decodedToken.email) {
+            return next()
+        }
+
+        res.status(403).json({
+            message: "unauthorized route🙂!"
+        })
         
 
-        next()
 
     } catch (error) {
         res.status(403).json({
             status: "fail",
-            error: "invalid token"
+            error: "Internal Server Error"
         })
     }
 }

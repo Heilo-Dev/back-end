@@ -29,7 +29,7 @@ exports.ondemand = async (req, res, next) => {
             filter.availability = availability;
         }
 
-        const result = await studentServices.getAllByFilter(filter)
+        const result = await studentServices.onDemangetAllByFilter(filter)
         // console.log(result);
 
         if (result.result.length == 0) {
@@ -88,26 +88,46 @@ exports.updateStudentProfile = async (req, res, next) => {
 
 exports.topUpReqController = async (req, res, next) => {
     try {
-
-        // const { trxId, amount, id, email } = req.body
-        // const reqData = { trxId, amount, _id: id, email }
-        // console.log(reqData);
-        const result = await studentServices.topUp_ReqService(req.body)
-        console.log(result);
-        if (result.error) {
-            console.log(result);
-            throw (result)
+        const { email, role, _id } = req.user;
+        const { trxId, amount, operator } = req.body;
+        if (!operator || !trxId || !amount) {
+            return res.status(500).json({
+                status: "fail",
+                message: "Empty property can't accepted"
+            })
         }
+        const data = { email, role, _id, trxId, amount, operator }
+
+
+        const result = await studentServices.topUp_ReqService(data)
+
         res.status(200).json({
-            status: result
+            result
         })
 
     } catch (error) {
         console.log(error);
         res.status(500).json({
             status: "fail",
-            message: Error,
-            error
+            message: error?.message,
+
+        })
+    }
+}
+
+exports.getWallateControler = async (req, res, next) => {
+    try {
+
+        const result = await studentServices.getWallateService(req.user)
+
+        res.status(200).json({
+            status: "Success",
+            result
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({
+            message: "internal server error"
         })
     }
 }
