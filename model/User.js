@@ -11,7 +11,7 @@ const userSchema = mongoose.Schema({
         required: [true, "please provide your name"],
         trim: true
     },
-    
+
     email: {
         type: String,
         unique: true,
@@ -32,7 +32,7 @@ const userSchema = mongoose.Schema({
                     minUppercase: 1,
                     minSymbols: 1
                 })
-                
+
             },
             message: "{VALUE} not Strong Password!! Follow: minumum 6 character  min_number 1, min_Uppercase 1, min_symbol 1 ; eg: Example#1"
         }
@@ -60,27 +60,27 @@ const userSchema = mongoose.Schema({
     },
 
     /* Education */
-    education: {
-        currentInstitution: {
-            name: {
-                type: String,
-                lowercase: true
-            },
-            class: {
-                type: String,
-                lowercase: true
-            },
-            medium: {
-                type: String,
-                lowercase: true
-            },
-            background: {
-                type: String,
-                lowercase: true
-            }
+
+    currentInstitution: {
+        name: {
+            type: String,
+            lowercase: true
         },
-       
+        class: {
+            type: String,
+            lowercase: true
+        },
+        medium: {
+            type: String,
+            lowercase: true
+        },
+        background: {
+            type: String,
+            lowercase: true
+        }
     },
+
+
     role: {
         type: String,
         required: true,
@@ -96,7 +96,7 @@ const userSchema = mongoose.Schema({
         default: "inactive"
     },
 
-   
+
     // balance: {
     //     ref:"UserWallate"
     // },
@@ -129,8 +129,8 @@ const userSchema = mongoose.Schema({
             type: String
         }
     }],
-   
-   
+
+
     preferredMedium: [{
         type: String,
         lowercase: true
