@@ -1,13 +1,12 @@
-
 const User = require("../model/User")
 const UserWallate = require("../model/UserWallate")
 const mongoose = require("mongoose");
 const ObjectId = mongoose.SchemaType.ObjectId
 
 
-exports.getAllUserService = async (fields) =>{
+exports.getAllUserService = async (fields) => {
     //return await User.find({role: fields});
-    return await User.find({}).sort({role:fields});
+    return await User.find({}).sort({role: fields});
 }
 exports.singup = async (data) => {
     const result = await User.create(data)
@@ -23,7 +22,7 @@ exports.singup = async (data) => {
         })
     console.log(creatWallate);
 
-    return { result, creatWallate };
+    return {result, creatWallate};
 }
 // exports.createWallate = async (data) => {
 //     const wallate = await UserWallate.create(data)
@@ -32,7 +31,7 @@ exports.singup = async (data) => {
 
 
 exports.findUserByEmail = async (email) => {
-    let result = await User.findOne({ email })
+    let result = await User.findOne({email})
     return result;
 }
 // exports.findUserById = async (id) => {
@@ -40,6 +39,22 @@ exports.findUserByEmail = async (email) => {
 //     return result;
 // }
 exports.userupdate = async (data) => {
-    let result = await User.updateOne(data)
+    let result = await User.updateOne()
     return result;
+}
+
+
+exports.passwordUpdate = async (id, data) => {
+    console.log(id, data)
+    const result = await User.updateOne(
+        {_id: id},
+        {
+            $set: {
+                password: data
+            }
+        },
+        {runValidators: true}
+    );
+    console.log(result)
+    return result
 }
