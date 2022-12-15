@@ -53,7 +53,7 @@ app.use("/api/v1/admin", adminRoute)
 
 
 // app.use("/*", async (req, res) => {
-//     console.log(req);
+//     // console.log(req);
 //     res.status(404).json({
 //         status: "fail",
 //         message:"No routes found"

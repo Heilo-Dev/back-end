@@ -21,6 +21,7 @@ exports.getTuitionService = async (id) => {
     const result = await sessionDb.find(
         { $and: [{status:"pending"},{ teacherId: id }] }
     )
-    // console.log(result);
-    return result;
+    const count = result.length;
+    console.log(count);
+    return {result,count};
 }
