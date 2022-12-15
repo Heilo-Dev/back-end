@@ -1,6 +1,6 @@
 const Services = require("../services/user.services")
 const { generateToken } = require("../utils/generateToken")
-const {findUserByEmail, userupdate,getAllUserService} = require("../services/user.services")
+const {findUserByEmail, resetPassService,getAllUserService} = require("../services/user.services")
 
 
 //all user
@@ -25,9 +25,7 @@ exports.allUser = async (req,res)=>{
 exports.register = async (req, res, next) => {
     try {
         const result = await Services.singup(req.body)
-        const user = await Services.findUserByEmail(result.email)
-        console.log(user);
-        // const wallate = await Services.createWallate(user.email, user._id)
+      
         res.status(200).json({
             status: "success",
             message: "successfully sign up "
@@ -103,18 +101,25 @@ exports.login = async (req, res, next) => {
 
 //reset password
 exports.resetPassword = async (req,res)=>{
-    try{
+    try {
+        // console.log(req.body);
         const {email,password} = req.body;
-        const findEmail =await findUserByEmail(email);
-        if(findEmail){
-            const updateThePassword = await userupdate(password);
+        const findUser = await findUserByEmail(email);
+        const newPass = findUser.hashPassAfterUpdate(password)
+        
+        if (findUser) {
+            const setNewPass = { email: findUser.email, password: newPass }
+            console.log(setNewPass);
+
+            const updateThePassword = await resetPassService(setNewPass);
             res.status(200).json({
                 status: "success",
                 "message":"password update successful",
                 result: updateThePassword
             });
         }
-    }catch (error) {
+    } catch (error) {
+        console.log(error);
         res.status(400).json({
             status: "fail",
             error

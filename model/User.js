@@ -160,14 +160,20 @@ userSchema.pre("save", function (next) {
     const password = this.password;
     const hashedPassword = bcrypt.hashSync(password);
     this.password = hashedPassword;
+    console.log(hashedPassword);
 
 
     next()
 })
+userSchema.methods.hashPassAfterUpdate = function (password) {
+    const hashedPassword = bcrypt.hashSync(password);
+    return hashedPassword;
+
+}
 
 
 userSchema.methods.comparePassword = function (password) {
-
+    console.log(password, this.password);
     const isPasswordValid = bcrypt.compareSync(password, this.password)
     // console.log(this.password);
     return isPasswordValid
