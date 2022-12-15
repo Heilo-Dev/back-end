@@ -1,6 +1,8 @@
 const { userupdate } = require("../controller/user.controller");
 const User = require("../model/User")
-const sessionDb = require('../model/Session')
+const sessionDb = require('../model/Session');
+const { default: mongoose } = require("mongoose");
+const { ObjectId } = mongoose.Types
 
 exports.getTecherFindByEmail = async (email) => {
     return result = await User.findOne({ email })
@@ -14,7 +16,11 @@ exports.updateATeacherServices = async (email, body) => {
     return result;
 }
 
-exports.getTuitionService = async () => {
-    const result = await sessionDb.find({status:"pending"})
-    return result 
+exports.getTuitionService = async (id) => {
+    console.log(id);
+    const result = await sessionDb.find(
+        { $and: [{status:"pending"},{ teacherId: id }] }
+    )
+    // console.log(result);
+    return result;
 }
