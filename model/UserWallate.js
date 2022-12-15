@@ -44,6 +44,15 @@ const userWallateSchema = mongoose.Schema({
             type: String,
             enum: ["not-paid", "verified", "pending"],
             default: "pending"
+        },
+        trxType: {
+            type: String,
+            lowercase: true,
+            trim:true,
+            required:[true, "trxType is  'top-up / widthdraw'"],
+            enum: ["top-up", "widthdraw"],
+            
+            message:""
         }
     }, /* {
         createdAt: { type: Date, default: time }

@@ -61,3 +61,16 @@ console.log(user);
 
     }
 }
+
+exports.getTuitionReqController = async (req, res, next) => {
+    try {
+        const result = await services.getTuitionService()
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({
+            status: "fail",
+            message:error.message
+            
+        })
+    }
+}

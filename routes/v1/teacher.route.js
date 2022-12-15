@@ -4,8 +4,8 @@ const teacher = require("../../controller/techer.controller");
 const verifyToken = require("../../middleware/verifyToken");
 
 
-router.route("/update")
-    .patch(verifyToken,teacher.updateATeacherController)
+router.patch("/update",verifyToken,teacher.updateATeacherController)
+router.get("/get-tuition-req", verifyToken, teacher.getTuitionReqController)
 
 
 

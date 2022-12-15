@@ -22,15 +22,16 @@ exports.homeGet = async (req, res, next) => {
     }
 }
 
-exports.adminWallateController = async (req, res, next) => {
+exports.adminGetWallateController = async (req, res, next) => {
     try {
 
-        const result = await adminServices.adminWallateService()
+        const result = await adminServices.adminGetWallateService()
 
         //    console.log(result);
         res.status(200).json({
             status: "success",
-            result
+            topupReq:result.topReq,
+            widthdrawReq:result.widdrawReq
         })
 
     } catch (error) {

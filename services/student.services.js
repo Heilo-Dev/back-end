@@ -1,5 +1,6 @@
-const User = require("../model/User");
-const UserWallate = require("../model/UserWallate")
+const user = require("../model/User");
+const userWallate = require("../model/UserWallate")
+const sessionDb = require("../model/Session")
 
 
 
@@ -8,11 +9,11 @@ exports.onDemangetAllByFilter = async (filter) => {
 
   // console.log(filter);
 
-  const result = await User.aggregate([{
+  const result = await user.aggregate([{
     "$match": filter
   },]).project({ name: 1, "education.currentInstitution.name": 1, tuitionSubjects: 1, hourlyRate: 1, gender: 1 })
 
-  const count = await User.aggregate([{
+  const count = await user.aggregate([{
     "$match": filter
   }, {
     "$count": "found"
@@ -25,22 +26,22 @@ exports.onDemangetAllByFilter = async (filter) => {
 
 
 exports.getStudentFindByEmail = async (email) => {
-  return result = await User.findOne({ email })
+  return result = await user.findOne({ email })
 
 }
 
 exports.updaterStudentProfile = async (email, data) => {
 
-  return result = await User.updateOne({ email }, data)
+  return result = await user.updateOne({ email }, data)
 
 
 }
 
 exports.topUp_ReqService = async (data) => {
-  const { trxId, _id, amount, operator } = data;
+  const { trxId, trxType, _id, amount, operator } = data;
 
 
-  const exits = await UserWallate.findById({ _id })
+  const exits = await userWallate.findById({ _id })
 
   const filter = exits.transaction.filter(obj => obj.trxId == trxId)
   // console.log(filter);
@@ -49,14 +50,19 @@ exports.topUp_ReqService = async (data) => {
     return { status: "fail", message: "Already apply  this TransactionId 👎" }
   }
 
-  const result = await UserWallate.updateOne({ _id }, { $push: { transaction: { trxId, amount, operator }, runValidators: true } },)
+  const result = await userWallate.updateOne({ _id }, { $push: { transaction: { trxId, amount, operator,trxType } } },)
   // console.log(result);
   return result;
 }
 
 exports.getWallateService = async (user) => {
   const { email } = user
-  const result = await UserWallate.find({ email: email, })
+  const result = await userWallate.find({ email: email, })
 
   return result
+}
+
+exports.tuitionReqService = async (data) => {
+  const result = await sessionDb.create(data)
+  return result 
 }

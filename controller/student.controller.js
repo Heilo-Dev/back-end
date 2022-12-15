@@ -89,14 +89,14 @@ exports.updateStudentProfile = async (req, res, next) => {
 exports.topUpReqController = async (req, res, next) => {
     try {
         const { email, role, _id } = req.user;
-        const { trxId, amount, operator } = req.body;
-        if (!operator || !trxId || !amount) {
+        const { trxId, amount, operator, trxType } = req.body;
+        if (!operator || !trxId || !amount || !trxType) {
             return res.status(500).json({
                 status: "fail",
                 message: "Empty property can't accepted"
             })
         }
-        const data = { email, role, _id, trxId, amount, operator }
+        const data = { email, role, _id, trxId, trxType, amount, operator }
 
 
         const result = await studentServices.topUp_ReqService(data)
@@ -128,6 +128,26 @@ exports.getWallateControler = async (req, res, next) => {
         console.log(error);
         res.status(400).json({
             message: "internal server error"
+        })
+    }
+}
+
+exports.tuitionReq = async (req, res, next) => {
+    try {
+        const { hourlyRate, studentId, teacherId } = req.body
+        const reqData = { hourlyRate, studentId, teacherId }
+        const result = await studentServices.tuitionReqService(reqData)
+console.log(result);
+        res.status(200).json({
+            status: "success",
+            // message:res
+        })
+
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({
+            status: "fail",
+            message: error
         })
     }
 }

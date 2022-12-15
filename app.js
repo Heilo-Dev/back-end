@@ -28,6 +28,7 @@ app.use("/api/v1/user", userRoute)
 
 /**TEACHER 👇👇
  * update,
+ * sent witddraw request
  *  */
 app.use("/api/v1/teacher", teacherRouter)
 /*  */
@@ -36,6 +37,7 @@ app.use("/api/v1/teacher", teacherRouter)
  * on deman Search
  * update
  * top-up
+ * sent tuition request
  */
 app.use("/api/v1/student", studentRouter)
 
