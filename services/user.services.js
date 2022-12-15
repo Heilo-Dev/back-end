@@ -38,15 +38,15 @@ exports.findUserByEmail = async (email) => {
 //     let result = await User.findOne({ id })
 //     return result;
 // }
-<<<<<<< HEAD
+
 exports.resetPassService = async (data) => {
     // console.log(data.email, data.password);
     const {email,password}=data
     let result = await User.updateOne({ email }, { password: password })
-=======
+
 exports.userupdate = async (data) => {
     let result = await User.updateOne()
->>>>>>> cb71c3a6d44c874c4cf93d759f6414415c710149
+
     return result;
 }
 
