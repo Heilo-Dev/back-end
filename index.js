@@ -1,13 +1,10 @@
 const mongoose = require("mongoose");
 require("dotenv").config();
 require("colors");
-
+const database = require("./utils/DB")
 const app = require("./app");
 
-// database connetion
-mongoose.connect(process.env.DATA_BASE_URI).then(() => {
-    console.log("Database connected Succefully".white);
-})
+database();
 
 const port = process.env.PORT ;
 

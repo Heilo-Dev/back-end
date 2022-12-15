@@ -1,10 +1,6 @@
-const adminServices = require("../services/admin.services");
-
-
+const adminServices = require("../services/admin.services")
 exports.homeGet = async (req, res, next) => {
     try {
-
-
         const result = await adminServices.homeGetService()
         console.log(result);
         res.status(200).json({

@@ -1,6 +1,27 @@
 const Services = require("../services/user.services")
 const { generateToken } = require("../utils/generateToken")
+const {findUserByEmail, userupdate,getAllUserService} = require("../services/user.services")
 
+
+//all user
+exports.allUser = async (req,res)=>{
+    try{
+        const fields = req.query.fields;
+        const getAllUser = await getAllUserService(fields);
+        res.status(200).json({
+            status: "success",
+            data: getAllUser,
+        });
+    }catch (error) {
+        res.status(404).json({
+            status: "Data find to Failed",
+            error: error.message,
+        });
+    }
+}
+
+
+//register user
 exports.register = async (req, res, next) => {
     try {
         const result = await Services.singup(req.body)
@@ -22,7 +43,7 @@ exports.register = async (req, res, next) => {
     }
 }
 
-
+//login user
 exports.login = async (req, res, next) => {
 
     try {
@@ -80,6 +101,28 @@ exports.login = async (req, res, next) => {
     }
 }
 
+//reset password
+exports.resetPassword = async (req,res)=>{
+    try{
+        const {email,password} = req.body;
+        const findEmail =await findUserByEmail(email);
+        if(findEmail){
+            const updateThePassword = await userupdate(password);
+            res.status(200).json({
+                status: "success",
+                "message":"password update successful",
+                result: updateThePassword
+            });
+        }
+    }catch (error) {
+        res.status(400).json({
+            status: "fail",
+            error
+        })
+    }
+}
+
+//refresh token
 exports.getme = async (req, res, next) => {
     try {
         const result = await Services.findUserByEmail(req.user?.email)
@@ -97,5 +140,4 @@ exports.getme = async (req, res, next) => {
 
     }
 }
-
 

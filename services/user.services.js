@@ -5,7 +5,10 @@ const mongoose = require("mongoose");
 const ObjectId = mongoose.SchemaType.ObjectId
 
 
-
+exports.getAllUserService = async (fields) =>{
+    //return await User.find({role: fields});
+    return await User.find({}).sort({role:fields});
+}
 exports.singup = async (data) => {
     const result = await User.create(data)
     let id = result._id.toString()
@@ -26,8 +29,6 @@ exports.singup = async (data) => {
 //     const wallate = await UserWallate.create(data)
 //     return wallate
 // }
-
-
 
 
 exports.findUserByEmail = async (email) => {
