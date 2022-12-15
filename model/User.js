@@ -162,11 +162,19 @@ userSchema.pre("save", function (next) {
     this.password = hashedPassword;
     next()
 })
+userSchema.methods.hashPassAfterUpdate = function (password) {
+    const hashedPassword = bcrypt.hashSync(password);
+    return hashedPassword;
+
+}
 
 
 userSchema.methods.comparePassword = function (password) {
-    const isPasswordValid = bcrypt.compareSync(password, this.password);
-    return isPasswordValid;
+
+    const isPasswordValid = bcrypt.compareSync(password, this.password)
+
+    return isPasswordValid
+
 }
 
 const User = mongoose.model("User", userSchema)

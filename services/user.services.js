@@ -11,7 +11,7 @@ exports.getAllUserService = async (fields) => {
 exports.singup = async (data) => {
     const result = await User.create(data)
     let id = result._id.toString()
-    console.log(id)
+    // console.log(id)
 
 
     const creatWallate = await UserWallate.create(
@@ -38,9 +38,12 @@ exports.findUserByEmail = async (email) => {
 //     let result = await User.findOne({ id })
 //     return result;
 // }
-exports.userupdate = async (data) => {
-    let result = await User.updateOne()
-    return result;
+
+exports.resetPassService = async (data) => {
+   
+    const { email, password } = data
+   return result = await User.updateOne({ email }, { password: password })
+
 }
 
 

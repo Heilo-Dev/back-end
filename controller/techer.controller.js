@@ -70,7 +70,8 @@ exports.getTuitionReqController = async (req, res, next) => {
         const result = await services.getTuitionService(teacherId)
         res.status(200).json({
             status: "fail",
-            result
+            found:result.count,
+            result:result.result
         })
     } catch (error) {
         console.log(error);
