@@ -109,11 +109,11 @@ exports.resetPassword = async (req, res) => {
         const updatePassword = await passwordUpdate(id,hashedPassword);
         res.status(200).json({
             status:"success",
-            message:"password update"
+            message:"password updated"
         })
     } catch (error) {
         res.status(400).json({
-            status: "fail",
+            status: "failed",
             error: "server error"
         })
     }
