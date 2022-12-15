@@ -160,12 +160,6 @@ userSchema.pre("save", function (next) {
     const password = this.password;
     const hashedPassword = bcrypt.hashSync(password);
     this.password = hashedPassword;
-<<<<<<< HEAD
-    console.log(hashedPassword);
-
-
-=======
->>>>>>> cb71c3a6d44c874c4cf93d759f6414415c710149
     next()
 })
 userSchema.methods.hashPassAfterUpdate = function (password) {
@@ -176,15 +170,11 @@ userSchema.methods.hashPassAfterUpdate = function (password) {
 
 
 userSchema.methods.comparePassword = function (password) {
-<<<<<<< HEAD
-    console.log(password, this.password);
+
     const isPasswordValid = bcrypt.compareSync(password, this.password)
-    // console.log(this.password);
+
     return isPasswordValid
-=======
-    const isPasswordValid = bcrypt.compareSync(password, this.password);
-    return isPasswordValid;
->>>>>>> cb71c3a6d44c874c4cf93d759f6414415c710149
+
 }
 
 const User = mongoose.model("User", userSchema)

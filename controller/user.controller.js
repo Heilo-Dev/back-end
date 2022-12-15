@@ -1,24 +1,24 @@
 const Services = require("../services/user.services")
 const { generateToken } = require("../utils/generateToken")
-const {findUserByEmail, userupdate,getAllUserService} = require("../services/user.services")
+
 
 
 //all user
-exports.allUser = async (req, res) => {
-    try {
-        const fields = req.query.fields;
-        const getAllUser = await getAllUserService(fields);
-        res.status(200).json({
-            status: "success",
-            data: getAllUser,
-        });
-    } catch (error) {
-        res.status(404).json({
-            status: "Data find to Failed",
-            error: error.message,
-        });
-    }
-}
+// exports.allUser = async (req, res) => {
+//     try {
+//         const fields = req.query.fields;
+//         const getAllUser = await Services.getAllUserService(fields);
+//         res.status(200).json({
+//             status: "success",
+//             data: getAllUser,
+//         });
+//     } catch (error) {
+//         res.status(404).json({
+//             status: "Data find to Failed",
+//             error: error.message,
+//         });
+//     }
+// }
 
 
 //register user
@@ -46,7 +46,7 @@ exports.login = async (req, res, next) => {
 
     try {
         const {email, password} = req.body;
-        if (!(email || !password)) {
+        if ((!email || !password)) {
             return res.status(401).json({
                 status: "fail",
                 error: "please provide email and password"
@@ -103,9 +103,11 @@ exports.login = async (req, res, next) => {
 exports.resetPassword = async (req,res)=>{
     try{
         const {email,password} = req.body;
-        const findEmail =await findUserByEmail(email);
-        if(findEmail){
-            const updateThePassword = await userupdate(password);
+        const user = await Services.findUserByEmail(email);
+        const hashPass = user.hashPassAfterUpdate(password)
+        if (user) {
+            const newPass = {email, password:hashPass}
+            const updateThePassword = await Services.resetPassService(newPass);
             res.status(200).json({
                 status: "success",
                 "message":"password update successful",
@@ -113,6 +115,7 @@ exports.resetPassword = async (req,res)=>{
             });
         }
     }catch (error) {
+        console.log(error)
         res.status(400).json({
             status: "failed",
             error: "server error"
