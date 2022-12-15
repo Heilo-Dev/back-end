@@ -1,18 +1,18 @@
 const Services = require("../services/user.services")
 const { generateToken } = require("../utils/generateToken")
-const {findUserByEmail, resetPassService,getAllUserService} = require("../services/user.services")
+const {findUserByEmail, userupdate,getAllUserService} = require("../services/user.services")
 
 
 //all user
-exports.allUser = async (req,res)=>{
-    try{
+exports.allUser = async (req, res) => {
+    try {
         const fields = req.query.fields;
         const getAllUser = await getAllUserService(fields);
         res.status(200).json({
             status: "success",
             data: getAllUser,
         });
-    }catch (error) {
+    } catch (error) {
         res.status(404).json({
             status: "Data find to Failed",
             error: error.message,
@@ -45,7 +45,7 @@ exports.register = async (req, res, next) => {
 exports.login = async (req, res, next) => {
 
     try {
-        const { email, password } = req.body;
+        const {email, password} = req.body;
         if (!(email || !password)) {
             return res.status(401).json({
                 status: "fail",
@@ -62,8 +62,8 @@ exports.login = async (req, res, next) => {
         }
 
 
-        const isValidPassword = user.comparePassword(password)
-        // console.log(isValidPassword);
+        const isValidPassword = user.comparePassword(password);
+        //console.log(isValidPassword);
 
         if (!isValidPassword) {
             return res.status(401).json({
@@ -80,7 +80,7 @@ exports.login = async (req, res, next) => {
         // }
         const token = generateToken(user);
         // console.log(user);
-        const { password: pass, ...others } = user.toObject();
+        const {password: pass, ...others} = user.toObject();
 
         res.status(200).json({
             status: "success",
@@ -101,28 +101,21 @@ exports.login = async (req, res, next) => {
 
 //reset password
 exports.resetPassword = async (req,res)=>{
-    try {
-        // console.log(req.body);
+    try{
         const {email,password} = req.body;
-        const findUser = await findUserByEmail(email);
-        const newPass = findUser.hashPassAfterUpdate(password)
-        
-        if (findUser) {
-            const setNewPass = { email: findUser.email, password: newPass }
-            console.log(setNewPass);
-
-            const updateThePassword = await resetPassService(setNewPass);
+        const findEmail =await findUserByEmail(email);
+        if(findEmail){
+            const updateThePassword = await userupdate(password);
             res.status(200).json({
                 status: "success",
                 "message":"password update successful",
                 result: updateThePassword
             });
         }
-    } catch (error) {
-        console.log(error);
+    }catch (error) {
         res.status(400).json({
-            status: "fail",
-            error
+            status: "failed",
+            error: "server error"
         })
     }
 }
@@ -131,7 +124,7 @@ exports.resetPassword = async (req,res)=>{
 exports.getme = async (req, res, next) => {
     try {
         const result = await Services.findUserByEmail(req.user?.email)
-        const { password, ...others } = result.toObject()
+        const {password, ...others} = result.toObject()
         res.status(200).json({
             status: "success",
             result: others
