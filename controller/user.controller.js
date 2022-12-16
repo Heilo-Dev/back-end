@@ -1,25 +1,21 @@
 const Services = require("../services/user.services")
-const { generateToken } = require("../utils/generateToken")
-
-
-
+const { generateToken } = require("../utils/generateToken");
 //all user
-// exports.allUser = async (req, res) => {
-//     try {
-//         const fields = req.query.fields;
-//         const getAllUser = await Services.getAllUserService(fields);
-//         res.status(200).json({
-//             status: "success",
-//             data: getAllUser,
-//         });
-//     } catch (error) {
-//         res.status(404).json({
-//             status: "Data find to Failed",
-//             error: error.message,
-//         });
-//     }
-// }
-
+exports.allUser = async (req, res) => {
+    try {
+        const fields = req.query.fields;
+        const getAllUser = await Services.getAllUserService(fields);
+        res.status(200).json({
+            status: "success",
+            data: getAllUser,
+        });
+    } catch (error) {
+        res.status(404).json({
+            status: "Data find to Failed",
+            error: error.message,
+        });
+    }
+}
 
 //register user
 exports.register = async (req, res, next) => {
