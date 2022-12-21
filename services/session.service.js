@@ -10,6 +10,12 @@ const GOOGLE_CALENDAR_ID = process.env.GOOGLE_CALENDAR_ID;
 exports.createSession = async (data) => {
   //create table for this data
 };
+
+exports.confirmSession = async () => {
+  //update the session table
+  //status will be true or false
+};
+
 exports.generateSessionLink = () => {
   //get the session data form create session table and pass it by data variable
   //and create temporary link generate table in DB
