@@ -61,8 +61,8 @@ exports.updateStudentProfile = async (req, res, next) => {
         const { email } = req.user
         console.log(email);
         // const user = await studentServices.getStudentFindByEmail(email)
-        console.log("user ", user);
-        if (user.role != "student") {
+        // console.log("user ", user);
+        if (req.user.role != "student") {
             return res.status(401).json({
                 status: "fail",
                 error: "not authorized for this route"
@@ -77,7 +77,7 @@ exports.updateStudentProfile = async (req, res, next) => {
         })
 
     } catch (error) {
-        // console.log(error);
+        console.log(error);
         res.status(400).json({
             status: "fail",
             error

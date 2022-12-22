@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const { ObjectId }=  mongoose.Types
 
 const text = new Date()
-console.log(text);
+
 // const date = text.toLocaleString()
 const sessionSchema = mongoose.Schema({
     teacherId: {

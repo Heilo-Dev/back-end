@@ -23,7 +23,7 @@ app.get("/", async (req, res) => {
  * USER 👇👇
  * login, register, get me..
  */
-app.use("/api/v1/user", userRoute)
+app.use("/api/v1/user", userRoute);
 /*  */
 
 /**TEACHER 👇👇
@@ -52,12 +52,12 @@ app.use("/api/v1/admin", adminRoute)
 
 
 
-app.use("/*", async (req, res) => {
-    console.log(req);
-    res.status(404).json({
-        status: "fail",
-        message:"No routes found"
-    })
-})
+// app.use("/*", async (req, res) => {
+//     // console.log(req);
+//     res.status(404).json({
+//         status: "fail",
+//         message:"No routes found"
+//     })
+// })
 
 module.exports = app;

@@ -1,12 +1,31 @@
 const Services = require("../services/user.services")
 const { generateToken } = require("../utils/generateToken")
 
+
+
+// all user
+exports.allUser = async (req, res) => {
+    try {
+        const fields = req.query.fields;
+        const getAllUser = await Services.getAllUserService(fields);
+        res.status(200).json({
+            status: "success",
+            data: getAllUser,
+        });
+    } catch (error) {
+        res.status(404).json({
+            status: "Data find to Failed",
+            error: error.message,
+        });
+    }
+}
+
+
+//register user
 exports.register = async (req, res, next) => {
     try {
         const result = await Services.singup(req.body)
-        const user = await Services.findUserByEmail(result.email)
-        console.log(user);
-        // const wallate = await Services.createWallate(user.email, user._id)
+      
         res.status(200).json({
             status: "success",
             message: "successfully sign up "
@@ -22,12 +41,12 @@ exports.register = async (req, res, next) => {
     }
 }
 
-
+//login user
 exports.login = async (req, res, next) => {
 
     try {
-        const { email, password } = req.body;
-        if (!(email || !password)) {
+        const {email, password} = req.body;
+        if ((!email || !password)) {
             return res.status(401).json({
                 status: "fail",
                 error: "please provide email and password"
@@ -43,8 +62,8 @@ exports.login = async (req, res, next) => {
         }
 
 
-        const isValidPassword = user.comparePassword(password)
-        // console.log(isValidPassword);
+        const isValidPassword = user.comparePassword(password);
+        //console.log(isValidPassword);
 
         if (!isValidPassword) {
             return res.status(401).json({
@@ -61,7 +80,7 @@ exports.login = async (req, res, next) => {
         // }
         const token = generateToken(user);
         // console.log(user);
-        const { password: pass, ...others } = user.toObject();
+        const {password: pass, ...others} = user.toObject();
 
         res.status(200).json({
             status: "success",
@@ -80,10 +99,35 @@ exports.login = async (req, res, next) => {
     }
 }
 
+//reset password
+exports.resetPassword = async (req,res)=>{
+    try{
+        const {email,password} = req.body;
+        const user = await Services.findUserByEmail(email);
+        const hashPass = user.hashPassAfterUpdate(password)
+        if (user) {
+            const newPass = {email, password:hashPass}
+            const updateThePassword = await Services.resetPassService(newPass);
+            res.status(200).json({
+                status: "success",
+                "message":"password update successful",
+                result: updateThePassword
+            });
+        }
+    }catch (error) {
+        console.log(error)
+        res.status(400).json({
+            status: "failed",
+            error: "server error"
+        })
+    }
+}
+
+//refresh token
 exports.getme = async (req, res, next) => {
     try {
         const result = await Services.findUserByEmail(req.user?.email)
-        const { password, ...others } = result.toObject()
+        const {password, ...others} = result.toObject()
         res.status(200).json({
             status: "success",
             result: others
@@ -97,5 +141,4 @@ exports.getme = async (req, res, next) => {
 
     }
 }
-
 
