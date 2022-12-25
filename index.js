@@ -1,13 +1,12 @@
-const mongoose = require("mongoose");
 require("dotenv").config();
 require("colors");
-const database = require("./utils/DB")
+const database = require("./utils/DB");
 const app = require("./app");
 
 database();
 
-const port = process.env.PORT ;
+const port = process.env.PORT;
 
 app.listen(port, () => {
-    console.log(`Server Lisnting at port ${port}`.blue )
-})
+  console.log(`Server Lisnting at port ${port}`.blue);
+});
