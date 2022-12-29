@@ -26,7 +26,7 @@ exports.confirmSession = async (id, status) => {
   return updateSession;
 };
 
-exports.generateSessionLink = async (id) => {
+exports.generateSessionLink = async (id, eventData) => {
   //get the session data form create session table and pass it by data variable
   //and create temporary link generate table in DB
 
@@ -36,6 +36,12 @@ exports.generateSessionLink = async (id) => {
     summary: getTheSessionData.summary,
     location: getTheSessionData.location,
     description: "A chance to hear more about Google's developer products.",
+    conferenceData: {
+      createRequest: {
+        requestId: "Heilo Team",
+        conferenceSolutionKey: { type: "hangoutsMeet" },
+      },
+    },
     start: {
       dateTime: getTheSessionData.start_time,
       timeZone: getTheSessionData.timeZone,
@@ -71,7 +77,7 @@ exports.generateSessionLink = async (id) => {
     scopes: SCOPES,
   });
 
-  auth.getClient().then((auth) => {
+  await auth.getClient().then((auth) => {
     calendar.events.insert(
       {
         auth: auth,
@@ -82,7 +88,7 @@ exports.generateSessionLink = async (id) => {
         if (err) {
           return err;
         }
-        const data = event.data;
+        eventData(event.data);
       }
     );
   });
@@ -92,7 +98,6 @@ exports.decrementBalance = async (id) => {
   const { studentId, teacherId } = await session.findOne({ _id: id });
   const { email } = await user.findOne({ _id: studentId });
   const { hourlyRate } = await user.findOne({ _id: teacherId });
-  console.log(studentId, teacherId, email, hourlyRate);
   return await UserWallet.updateOne(
     { email },
     { $inc: { balance: -hourlyRate } }

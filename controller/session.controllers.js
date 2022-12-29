@@ -47,17 +47,18 @@ exports.confirmSession = async (req, res) => {
        */
 
       //decrement the balance form student wallet
-      const dec = await decrementBalance(id);
+      await decrementBalance(id);
 
       //link generate
-      const generateLink = await generateSessionLink(id);
+      const eventData = (data) => {
+        console.log(data);
+        return data;
+      };
+      await generateSessionLink(id, eventData);
 
       res.status(200).json({
         status: "success",
         message: "Request update Successfully",
-        data: {
-          generateLink,
-        },
       });
     }
   } catch (error) {
