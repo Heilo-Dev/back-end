@@ -8,4 +8,6 @@ sessionRoutes
   .post(sessionController.getSessionRequest) //this is for student
   .patch(sessionController.confirmSession); //this is for teacher
 
+sessionRoutes.get("/all-events", sessionController.getTheEvents);
+
 module.exports = sessionRoutes;
