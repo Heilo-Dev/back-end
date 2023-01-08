@@ -47,34 +47,6 @@ exports.ondemand = async (req, res, next) => {
 };
 
 exports.updateStudentProfile = async (req, res, next) => {
-<<<<<<< HEAD
-    try {
-        const { email } = req.user
-        console.log(email);
-        // const user = await studentServices.getStudentFindByEmail(email)
-        // console.log("user ", user);
-        if (req.user.role != "student") {
-            return res.status(401).json({
-                status: "fail",
-                error: "not authorized for this route"
-            })
-        }
-
-        const result = await studentServices.updaterStudentProfile(email, req.body)
-
-        res.status(200).json({
-            status: "success",
-            result
-        })
-
-    } catch (error) {
-        console.log(error);
-        res.status(400).json({
-            status: "fail",
-            error
-        })
-
-=======
   try {
     const { email } = req.user;
     console.log(email);
@@ -85,7 +57,6 @@ exports.updateStudentProfile = async (req, res, next) => {
         status: "fail",
         error: "not authorized for this route",
       });
->>>>>>> shaon
     }
 
     const result = await studentServices.updaterStudentProfile(email, req.body);

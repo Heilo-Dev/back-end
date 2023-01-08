@@ -40,22 +40,6 @@ exports.resetPassService = async (data) => {
   return (result = await User.updateOne({ email }, { password: password }));
 };
 
-<<<<<<< HEAD
-// exports.passwordUpdate = async (id, data) => {
-//     console.log(id, data)
-//     const result = await User.updateOne(
-//         {_id: id},
-//         {
-//             $set: {
-//                 password: data
-//             }
-//         },
-//         {runValidators: true}
-//     );
-//     console.log(result)
-//     return result
-// }
-=======
 exports.passwordUpdate = async (id, data) => {
   console.log(id, data);
   const result = await User.updateOne(
@@ -70,4 +54,3 @@ exports.passwordUpdate = async (id, data) => {
   console.log(result);
   return result;
 };
->>>>>>> shaon
