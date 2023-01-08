@@ -8,10 +8,7 @@ database();
 const port = process.env.PORT;
 
 app.listen(port, () => {
-<<<<<<< HEAD
-    console.log(`Server Lisnting at port ${port}`.bgWhite.black )
-})
-=======
+
   console.log(`Server Lisnting at port ${port}`.blue);
 });
->>>>>>> shaon
+
