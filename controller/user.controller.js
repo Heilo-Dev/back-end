@@ -1,9 +1,14 @@
 const Services = require("../services/user.services")
+<<<<<<< HEAD
 const { generateToken } = require("../utils/generateToken")
 
 
 
 // all user
+=======
+const { generateToken } = require("../utils/generateToken");
+//all user
+>>>>>>> shaon
 exports.allUser = async (req, res) => {
     try {
         const fields = req.query.fields;
@@ -19,7 +24,10 @@ exports.allUser = async (req, res) => {
         });
     }
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> shaon
 
 //register user
 exports.register = async (req, res, next) => {
