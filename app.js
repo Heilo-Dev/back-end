@@ -1,12 +1,13 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const teacherRouter = require("./routes/v1/teacher.route");
-const userRoute = require("./routes/v1/user.route");
-const studentRouter = require("./routes/v1/student.route");
-const adminRoute = require("./routes/v1/admin.route");
+const teacherRouter = require("./routes/v1/teacher.routes");
+const userRoute = require("./routes/v1/user.routes");
+const studentRouter = require("./routes/v1/student.routes");
+const adminRoute = require("./routes/v1/admin.routes");
 const sessionRoutes = require("./routes/v1/session.routes");
 const review_rating = require("./routes/v1/review_rating.routes");
+const messageRoute = require("./routes/v1/messenger.routes")
 // midlldeware
 app.use(cors());
 app.use(express.json());
@@ -55,4 +56,8 @@ app.use("/api/v1/session", sessionRoutes);
  */
 app.use("/api/v1/review-rating", review_rating);
 
+/**
+ * Messagin routes below
+ */
+app.use("/api/v1/inbox", messageRoute);
 module.exports = app;

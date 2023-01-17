@@ -5,7 +5,7 @@ const {
   decrementBalance,
   allEvents,
   tempDb,
-} = require("../services/session.service");
+} = require("../services/session.services");
 
 //create session req from student
 exports.getSessionRequest = async (req, res) => {

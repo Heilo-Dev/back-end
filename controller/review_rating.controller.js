@@ -2,7 +2,7 @@ const {
   createReviewRatings,
   getReviewRatings,
   getSingleReviewRatings,
-} = require("../services/review_rating.service");
+} = require("../services/review_rating.services");
 
 exports.create_review_rating = async (req, res) => {
   try {
