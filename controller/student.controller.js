@@ -49,9 +49,9 @@ exports.ondemand = async (req, res, next) => {
 exports.updateStudentProfile = async (req, res, next) => {
   try {
     const { email } = req.user;
-    console.log(email);
-    // const user = await studentServices.getStudentFindByEmail(email)
-    console.log("user ", user);
+    // console.log(email);
+    const user = await studentServices.getStudentFindByEmail(email)
+    // console.log("user ", user);
     if (user.role != "student") {
       return res.status(401).json({
         status: "fail",
@@ -66,7 +66,7 @@ exports.updateStudentProfile = async (req, res, next) => {
       result,
     });
   } catch (error) {
-    // console.log(error);
+    console.log(error);
     res.status(400).json({
       status: "fail",
       error,

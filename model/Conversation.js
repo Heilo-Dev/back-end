@@ -16,6 +16,7 @@ const conversationSchema = mongoose.Schema({
     }
 
 }, {
-    timestaps: true
+    timestamps: true
 });
 const Conversartion = mongoose.model("Conversartion", conversationSchema);
+module.exports = Conversartion;
