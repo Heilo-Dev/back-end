@@ -28,7 +28,7 @@ const messageSchema = mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-    Conversartion_id: {
+    conversation_id: {
         type: ObjectId,
         required: true
     }

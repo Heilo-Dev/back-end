@@ -1,11 +1,9 @@
 const express = require("express");
 const app = express();
-const http = require("http");
 
 const cors = require("cors");
 
-const Conversation = require("./model/Conversation")
-const Message = require("./model/Message")
+
 
 
 // imports Routes
@@ -15,13 +13,14 @@ const studentRouter = require("./routes/v1/student.routes");
 const adminRoute = require("./routes/v1/admin.routes");
 const sessionRoutes = require("./routes/v1/session.routes");
 const review_rating = require("./routes/v1/review_rating.routes");
-const messageRoute = require("./routes/v1/messenger.routes");
-const { socket } = require("./utils/Socket");
+const messageRoute = require("./routes/v1/messages.routes");
+
 
 
 // midlldeware
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({extended:true}));
 
 app.get("/", async (req, res) => {
   res.status(200).send("Server is yo yo Rocking !! 😎");
@@ -64,7 +63,12 @@ app.use("/api/v1/review-rating", review_rating);
 //  Messaging routes below
 
 app.use("/api/v1/req", messageRoute);
-app.use("/api/v1/message", messageRoute);
+app.use("/api/v1/messages", messageRoute);
+
+app.use("*", (req, res) => {
+  console.log(req.url);
+  res.status(404).send("Not Routes Found")
+})
 
 // ---------------------------------------------------------------
 // -----------------------  SOCKET IO    --------------------------

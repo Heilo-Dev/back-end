@@ -37,38 +37,18 @@ exports.createConversation = async (req, res) => {
 }
 
 
-exports.messages = async (req, res, next) => {
+exports.getMessages = async (req, res, next) => {
     try {
-        const { _id, name } = req.user
-        const { Conversartion_id, receiver, text, attachment } = req.body
-        const { id, name: receiver_name } = receiver
-
-
-        io.on("connection", function (socket) {
-            console.log("new user connected", socket.id);
-            // console.log(ioEvent.on);
-            socket.on("message", function (message_text) {
-                io.emit("messageForward", message_text)
-                
-            })
-            socket.on("disconnect", function () {
-                console.log('user disconnected', socket.id);
-            })
+        const { conversation_id }   = req.body
+        console.log(conversation_id);
+            const result = await Message.find({
+            "conversation_id":conversation_id
         })
-        
-        const result = await Message.create({
-            text,
-            attachment,
-            Conversartion_id,
-            "sender.id":_id,
-            "sender.name":name,
-            "receiver.id": id,
-            "receiver.name": name
-        })
+       
         res.status(200).json({
             result
         })
     } catch (error) {
-        res.status(500).json({ error })
+        res.status(500).json({ messages:error })
     }
 }

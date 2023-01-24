@@ -1,19 +1,18 @@
-const express = require("express");
-const http = require("http");
+const app = require("../app")
+const httpServer = require("http").Server(app);
 
-const { Server } = require("socket.io");
-const app = express();
-const httpServer = http.createServer(app)
+const {Server} = require("socket.io");
+
 const Conversation = require("../model/Conversation")
 
+const Message = require("../model/Message")
 
-const io =  Server(
-    httpServer, {
+const io = new Server(httpServer, {
     cors: {
-        origin: process.env.HOST_NAME,
-        methods: ["GET", "POST"]
+        origin: "*",
+        methods: "*"
     }
-}
+ }
 );
 
 
@@ -23,10 +22,10 @@ const io =  Server(
 
     socket.on("send_message", async (data) => {
             try {
-                console.log(data);
+                // console.log(data);
                 const { Conversartion_id, sender, receiver, text, date_time } = data;
                 if (typeof data != "object") {
-                    console.log(typeof data);
+                    // console.log(typeof data);
                     let error = { status: 500, message: "Please send valid json object" }
                     return io.emit("error", error)
                 }
