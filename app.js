@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const http = require("http");
-const { Server } = require("socket.io");
+
 const cors = require("cors");
 
 const Conversation = require("./model/Conversation")
@@ -15,7 +15,9 @@ const studentRouter = require("./routes/v1/student.routes");
 const adminRoute = require("./routes/v1/admin.routes");
 const sessionRoutes = require("./routes/v1/session.routes");
 const review_rating = require("./routes/v1/review_rating.routes");
-const messageRoute = require("./routes/v1/messenger.routes")
+const messageRoute = require("./routes/v1/messenger.routes");
+const { socket } = require("./utils/Socket");
+
 
 // midlldeware
 app.use(cors());
@@ -66,47 +68,8 @@ app.use("/api/v1/message", messageRoute);
 
 // ---------------------------------------------------------------
 // -----------------------  SOCKET IO    --------------------------
-const server = http.createServer(app);
-
-const io = new Server(server, {
-  cors: {
-    origin: process.env.HOST_NAME,
-    methods: ["GET", "POST"]
-  }
-});
-
-io.on("connection", function (socket) {
-  // console.log("new user connected", socket.id);
+// const server = http.createServer(app);
 
 
-  socket.on("send_message",async (data) => {
-    try {
-      console.log(data);
-      const { Conversartion_id, sender, receiver, text, date_time } = data;
-      if (!Conversartion_id && sender && receiver) {
-        return console.log("empty");
-      }
-      const findConversation = await Conversation.findById({ "_id": Conversartion_id })
-
-      if (!findConversation) {
-        return
-      }
-      const saveMsg = await Message.create({
-        "Conversartion_id": findConversation._id,
-        sender,
-        receiver,
-        text,
-        date_time
-      })
-      console.log(saveMsg);
-    io.emit("recived_message", saveMsg.text)
-    } catch (error) {
-
-      console.log(error);
-    }
-
-  })
-
-})
-
-module.exports = server;
+module.exports = app;
+  
