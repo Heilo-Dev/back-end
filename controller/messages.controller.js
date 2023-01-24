@@ -23,7 +23,7 @@ exports.createConversation = async (req, res) => {
                 "creator.id": _id, "creator.name": name, "participant.id": id, "participant.name": participantName
             })
         }
-        // console.log(existing_conversation);
+        console.log(existing_conversation);
         res.status(200)
             .json({
                 status: "successful",

@@ -22,32 +22,35 @@ const io = new Server(httpServer, {
 
     socket.on("send_message", async (data) => {
             try {
-                // console.log(data);
-                const { Conversartion_id, sender, receiver, text, date_time } = data;
+                console.log(data);
+                const { conversation_id, sender, receiver, text,attachment,  } = data;
                 if (typeof data != "object") {
                     // console.log(typeof data);
                     let error = { status: 500, message: "Please send valid json object" }
                     return io.emit("error", error)
                 }
-                if (!Conversartion_id && sender && receiver) {
+                if (!conversation_id || !sender || !receiver) {
                     error = { status: 400, message: "require: conversationId*, sender*, receiver*" }
                     return io.emit("error", error)
 
                 }
-                const findConversation = await Conversation.findById({ "_id": Conversartion_id })
+                const findConversation = await Conversation.findById({ "_id": conversation_id })
 
                 if (!findConversation) {
                     error = { status: 404, message: "This conversation or user not found" }
                     return io.emit("error", error)
                 }
                 const saveMsg = await Message.create({
-                    "Conversartion_id": findConversation._id,
-                    sender,
-                    receiver,
+                    "conversation_id": findConversation._id,
+                    "sender.id":sender.id,
+                    "sender.name":sender.name,
+                    "receiver.id":receiver.id,
+                    "receiver.name":receiver.name,
                     text,
-                    date_time
+                    attachment,
+                   
                 })
-                console.log(saveMsg);
+                // console.log(saveMsg);
                 io.emit("recived_message", saveMsg.text)
             } catch (error) {
                 io.emit("error", error)
