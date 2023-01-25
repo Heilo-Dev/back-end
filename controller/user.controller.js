@@ -39,7 +39,7 @@ exports.register = async (req, res, next) => {
 
 //login user
 exports.login = async (req, res, next) => {
-
+console.log(req.url);
     try {
         const {email, password} = req.body;
         if ((!email || !password)) {

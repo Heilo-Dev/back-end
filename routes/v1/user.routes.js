@@ -1,10 +1,14 @@
 const router = require("express").Router();
+
 const userController = require("../../controller/user.controller");
+const verifyAdmin = require("../../middleware/verifyAdmin");
 const verifyToken = require("../../middleware/verifyToken");
 
-router.get("/", userController.allUser);
 
-router.route("/register").post(userController.register);
+//  http:domain:port/api/v1/user
+router.get("/",verifyAdmin, userController.allUser);
+
+router.post("/register",userController.register);
 router.post("/login", userController.login);
 router.get("/getme", verifyToken, userController.getme);
 

@@ -1,14 +1,18 @@
 require("dotenv").config();
 require("colors");
 const database = require("./utils/DB");
-const app = require("./app");
-
+const app = require("./app")
+const server = require("././utils/Socket");
 database();
 
 const port = process.env.PORT;
 
-app.listen(port, () => {
+
+// server.listen(port, () => {
+
+//   console.log(`Server Lisnting at port ${port}`.blue);
+// });
+server.listen(port, () => {
 
   console.log(`Server Lisnting at port ${port}`.blue);
 });
-
