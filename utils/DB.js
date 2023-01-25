@@ -9,7 +9,7 @@ module.exports = database = () => {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         })
-        .then(() => console.log(`Database Connected successfull, ${text.toLocaleString()}`.bgGreen.white))
+      .then(() => console.log(`Database Connected successfull, ${text.toLocaleString().bgGreen.black}`))
         .catch("Connect to fail....");
 };
 
