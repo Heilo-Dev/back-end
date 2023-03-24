@@ -4,7 +4,7 @@ const text = new Date();
 mongoose.set("strictQuery", true);
 module.exports = database = () => {
   mongoose
-    .connect(process.env.DATA_BASE_URI, {
+    .connect(process.env.LOCAL_DATABASE_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     })

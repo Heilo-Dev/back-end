@@ -5,9 +5,11 @@ const sessionController = require("../../controller/session.controllers");
 
 sessionRoutes
   .route("/create-session")
-  .post(sessionController.getSessionRequest) //this is for student
+  .post(sessionController.getSessionRequest)
+  //this is for student
   .patch(sessionController.confirmSession); //this is for teacher
 
 sessionRoutes.get("/all-events", sessionController.getTheEvents);
+sessionRoutes.post("/create-account", sessionController.createAccount);
 
 module.exports = sessionRoutes;

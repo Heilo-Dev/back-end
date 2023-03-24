@@ -44,6 +44,9 @@ const sessionSchema = mongoose.Schema({
     enum: ["accept", "reject", "pending"],
     default: "pending",
   },
+  refreshToken: {
+    type: String,
+  },
 });
 
 const Session = mongoose.model("Session", sessionSchema);

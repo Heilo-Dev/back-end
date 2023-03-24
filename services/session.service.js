@@ -3,28 +3,33 @@ const session = require("../model/Session");
 const UserWallet = require("../model/UserWallate");
 const user = require("../model/User");
 const tempDB = require("../model/tempDB");
-const SCOPES = ["https://www.googleapis.com/auth/calendar.events"];
-const GOOGLE_PRIVATE_KEY = process.env.GOOGLE_PRIVATE_KEY;
-const GOOGLE_CLIENT_EMAIL = process.env.GOOGLE_CLIENT_EMAIL;
+
 const GOOGLE_PROJECT_NUMBER = process.env.GOOGLE_PROJECT_NUMBER;
 const GOOGLE_CALENDAR_ID = process.env.GOOGLE_CALENDAR_ID;
 
-const jwtClient = new google.auth.JWT(
-  GOOGLE_CLIENT_EMAIL,
-  null,
-  GOOGLE_PRIVATE_KEY,
-  SCOPES
+const oauth2Client = new google.auth.OAuth2(
+  process.env.CLIENT_ID,
+  process.env.CLIENT_SECRET,
+  //process.env.REDIRECT_URI
+  "http://localhost:3000"
 );
 
-const auth = new google.auth.GoogleAuth({
-  keyFile: "fluted-sentry-326911-17a0711168e9.json",
-  scopes: SCOPES,
-});
+//refresh_token should be come form DB, update this code
+oauth2Client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN });
+
 const calendar = google.calendar({
   version: "v3",
   project: GOOGLE_PROJECT_NUMBER,
-  auth: jwtClient,
+  auth: oauth2Client,
 });
+
+//remove this function and implement it in the register function
+// exports.createAccount = async (data) => {
+//   //create table for this data
+//   const { tokens } = await oauth2Client.getToken(data);
+//   console.log(tokens, "tokens");
+// };
+
 exports.createSession = async (data) => {
   //create table for this data
   const result = new session(data);
@@ -34,13 +39,20 @@ exports.createSession = async (data) => {
 exports.confirmSession = async (id, status) => {
   //update the session table
   //status will be true or false
+  //check given session id is on the DB if exits then create new one session otherwise it will create a session
+  // const data = { message: "please create an new session!" };
+  // const isSession = await session.findById({ _id: id });
 
+  // if (!isSession) {
   const updateSession = await session.updateOne(
     { _id: id },
     { status: status },
     { runValidators: true }
   );
   return updateSession;
+  // } else {
+  //   return data;
+  // }
 };
 
 exports.generateSessionLink = async (id, eventData) => {
@@ -56,7 +68,6 @@ exports.generateSessionLink = async (id, eventData) => {
     }
     return result;
   }
-  //console.log(makeid(5));
   const getTheSessionData = await session.findOne({ _id: id });
 
   let event = {
@@ -83,37 +94,34 @@ exports.generateSessionLink = async (id, eventData) => {
     conferenceData: {
       createRequest: {
         requestId: makeid(10),
-        //conferenceSolutionKey: { type: "eventNamedHangout" },
+        conferenceSolutionKey: { type: "hangoutsMeet" },
       },
     },
   };
 
-  console.log(event.conferenceData);
-  await auth.getClient().then((auth) => {
-    calendar.events.insert(
-      {
-        auth: auth,
-        calendarId: GOOGLE_CALENDAR_ID,
-        resource: event,
-        conferenceDataVersion: 1,
-      },
-      function (err, event) {
-        if (err) {
-          console.log(err);
-          return err;
-        }
-        eventData(event.data);
+  await calendar.events.insert(
+    {
+      auth: oauth2Client,
+      calendarId: GOOGLE_CALENDAR_ID,
+      resource: event,
+      conferenceDataVersion: 1,
+    },
+    function (err, event) {
+      if (err) {
+        console.log(err);
+        return err;
       }
-    );
-  });
+      eventData(event.data);
+    }
+  );
 };
 
 exports.decrementBalance = async (id) => {
   const { studentId, teacherId } = await session.findOne({ _id: id });
-  const { email } = await user.findOne({ _id: studentId });
   const { hourlyRate } = await user.findOne({ _id: teacherId });
+
   return await UserWallet.updateOne(
-    { email },
+    { studentId },
     { $inc: { balance: -hourlyRate } }
   );
 };

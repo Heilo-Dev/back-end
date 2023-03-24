@@ -1,7 +1,6 @@
 const User = require("../model/User");
 const UserWallate = require("../model/UserWallate");
-const mongoose = require("mongoose");
-const ObjectId = mongoose.SchemaType.ObjectId;
+const { google } = require("googleapis");
 
 exports.getAllUserService = async (fields) => {
   return await User.find({}).sort({ role: fields });
@@ -17,23 +16,13 @@ exports.singup = async (data) => {
     email: result.email,
     role: result.role,
   });
-  console.log(creatWallate);
-
   return { result, creatWallate };
 };
-// exports.createWallate = async (data) => {
-//     const wallate = await UserWallate.create(data)
-//     return wallate
-// }
 
 exports.findUserByEmail = async (email) => {
   let result = await User.findOne({ email });
   return result;
 };
-// exports.findUserById = async (id) => {
-//     let result = await User.findOne({ id })
-//     return result;
-// }
 
 exports.resetPassService = async (data) => {
   const { email, password } = data;
@@ -53,4 +42,28 @@ exports.passwordUpdate = async (id, data) => {
   );
   console.log(result);
   return result;
+};
+
+exports.googleLoginService = async () => {
+  const oauth2Client = new google.auth.OAuth2(
+    process.env.CLIENT_ID,
+    process.env.CLIENT_SECRET,
+    "https://developers.google.com/oauthplayground"
+  );
+  const options = {
+    access_type: "online",
+    scope: ["https://www.googleapis.com/auth/calendar"],
+  };
+
+  const authUrl = await oauth2Client.generateAuthUrl(options);
+
+  console.log(authUrl, "url");
+  return authUrl;
+  // const result = {
+  //   name: "name",
+  //   email: "",
+  //   role: "",
+  //   phoneNumber: "",
+  //   accessToken:
+  // }
 };

@@ -1,101 +1,98 @@
-const mongoose = require('mongoose');
-const validator = require('validator');
-const bcrypt = require('bcryptjs');
+const mongoose = require("mongoose");
+const validator = require("validator");
+const bcrypt = require("bcryptjs");
 
-
-const userSchema = mongoose.Schema({
-
+const userSchema = mongoose.Schema(
+  {
     /* Basic Info */
     name: {
-        type: String,
-        required: [true, "please provide your name"],
-        trim: true
+      type: String,
+      required: [true, "please provide your name"],
+      trim: true,
     },
 
     email: {
-        type: String,
-        unique: true,
-        lowercase: true,
-        required: [true, "Please provide your valid email"],
-        validate: [validator.isEmail, "please Provide valid email"]
-
+      type: String,
+      unique: true,
+      lowercase: true,
+      required: [true, "Please provide your valid email"],
+      validate: [validator.isEmail, "please Provide valid email"],
     },
     password: {
-        type: String,
-        require: [true],
-        validate: {
-            validator: (value) => {
-
-                return validator.isStrongPassword(value, {
-                    minLength: 6,
-                    minNumbers: 1,
-                    minUppercase: 1,
-                    minSymbols: 1
-                })
-
-            },
-            message: "{VALUE} not Strong Password!! Follow: minumum 6 character  min_number 1, min_Uppercase 1, min_symbol 1 ; eg: Example#1"
-        }
+      type: String,
+      require: [true],
+      validate: {
+        validator: (value) => {
+          return validator.isStrongPassword(value, {
+            minLength: 6,
+            minNumbers: 1,
+            minUppercase: 1,
+            minSymbols: 1,
+          });
+        },
+        message:
+          "{VALUE} not Strong Password!! Follow: minumum 6 character  min_number 1, min_Uppercase 1, min_symbol 1 ; eg: Example#1",
+      },
     },
     phoneNumber: {
-        type: String,
-        unique: true,
-        required: [true, "Please provide your phone number"],
-        validate: [validator.isMobilePhone],
-        message: "{VALUE} is not valid number"
+      type: String,
+      unique: true,
+      required: [true, "Please provide your phone number"],
+      validate: [validator.isMobilePhone],
+      message: "{VALUE} is not valid number",
     },
     gender: {
-        type: String,
-        enum: ["male", "female", "transgender"],
-
+      type: String,
+      enum: ["male", "female", "transgender"],
     },
     division: {
-        type: String,
-        lowercase: true,
-        trim: true
+      type: String,
+      lowercase: true,
+      trim: true,
     },
     village: {
-        type: String,
-        trim: true
+      type: String,
+      trim: true,
     },
 
     /* Education */
 
     currentInstitution: {
-        name: {
-            type: String,
-            lowercase: true
-        },
-        class: {
-            type: String,
-            lowercase: true
-        },
-        medium: {
-            type: String,
-            lowercase: true
-        },
-        background: {
-            type: String,
-            lowercase: true
-        }
+      name: {
+        type: String,
+        lowercase: true,
+      },
+      class: {
+        type: String,
+        lowercase: true,
+      },
+      medium: {
+        type: String,
+        lowercase: true,
+      },
+      background: {
+        type: String,
+        lowercase: true,
+      },
     },
-
 
     role: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
 
-        enum: {
-            values: ["student", "teacher", "admin"],
-            message: "{VALUE} is not student or teacher"
-        }
+      enum: {
+        values: ["student", "teacher", "admin"],
+        message: "{VALUE} is not student or teacher",
+      },
     },
     status: {
-        type: String,
-        enum: ["active", "inactive", "blocked"],
-        default: "inactive"
+      type: String,
+      enum: ["active", "inactive", "blocked"],
+      default: "inactive",
     },
-
+    refreshToken: {
+      type: String,
+    },
 
     // balance: {
     //     ref:"UserWallate"
@@ -104,78 +101,76 @@ const userSchema = mongoose.Schema({
      * TEACHER iNFORMATION
      */
     previousInstitution: {
-        name: {
-            type: String,
-            lowercase: true
-        },
-        department: {
-            type: String,
-            lowercase: true
-        },
-
+      name: {
+        type: String,
+        lowercase: true,
+      },
+      department: {
+        type: String,
+        lowercase: true,
+      },
     },
     hourlyRate: {
-        type: Number,
-        min: 0
-
+      type: Number,
+      min: 0,
     },
-    tuitionSubjects: [{
+    tuitionSubjects: [
+      {
         name: {
-            type: String,
-            trim: true,
-            lowercase: true
+          type: String,
+          trim: true,
+          lowercase: true,
         },
         class: {
-            type: String
-        }
-    }],
+          type: String,
+        },
+      },
+    ],
 
-
-    preferredMedium: [{
+    preferredMedium: [
+      {
         type: String,
-        lowercase: true
-
-    }],
+        lowercase: true,
+      },
+    ],
     availability: [
-        {
-            type: String,
-            lowercase: true,
-            trim: true
-        }
-
+      {
+        type: String,
+        lowercase: true,
+        trim: true,
+      },
     ],
     /* preferredClass: [{
         type: String
     }] */
+    accessToken: {
+      type: String,
+    },
     rating: {
-        type: Number
-    }
-
-},
-    {
-        timestamps: true
-    })
+      type: Number,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
 userSchema.pre("save", function (next) {
-    const password = this.password;
-    const hashedPassword = bcrypt.hashSync(password);
-    this.password = hashedPassword;
-    next()
-})
+  const password = this.password;
+  const hashedPassword = bcrypt.hashSync(password);
+  this.password = hashedPassword;
+  next();
+});
 userSchema.methods.hashPassAfterUpdate = function (password) {
-    const hashedPassword = bcrypt.hashSync(password);
-    return hashedPassword;
-
-}
-
+  const hashedPassword = bcrypt.hashSync(password);
+  return hashedPassword;
+};
 
 userSchema.methods.comparePassword = function (password) {
+  const isPasswordValid = bcrypt.compareSync(password, this.password);
 
-    const isPasswordValid = bcrypt.compareSync(password, this.password)
+  return isPasswordValid;
+};
 
-    return isPasswordValid
-
-}
-
-const User = mongoose.model("User", userSchema)
+const User = mongoose.model("User", userSchema);
 module.exports = User;

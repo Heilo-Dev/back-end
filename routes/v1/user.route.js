@@ -13,4 +13,6 @@ router.patch("/reset-password", userController.resetPassword);
 router.patch("/reset-password", userController.resetPassword);
 // router.patch("/update",verifyToken, userController.userupdate)
 
+router.get("/google-login", userController.googleLogin);
+
 module.exports = router;
